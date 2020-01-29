@@ -1,6 +1,8 @@
 package com.rafalazar.bootcamp.app.controller;
 
 import java.net.URI;
+import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,5 +90,45 @@ public class BankingProductController {
 	@GetMapping("/findAllClients")
 	Flux<ClientDto> findAllClients() {
 		return service.findAllClients();
+	}
+	
+	@GetMapping("/createById/{id}")
+	Mono<BankingProduct> createById(@PathVariable("id") String id, @RequestBody BankingProduct bp){
+		if(bp.getJointAt() == null) {
+			bp.setJointAt(new Date());
+		}
+		
+		if(bp.getUpdateAt() == null) {
+			bp.setUpdateAt(new Date());
+		}
+		
+		return service.createById(id)
+				.flatMap(p -> {
+					bp.setProductName(bp.getProductName());
+					bp.setClientType(p.getType());
+					bp.setNumAccount(UUID.randomUUID().toString());
+					bp.setNameOwner(p.getName()+ " " +p.getLasName());
+					bp.setNumDoc(p.getDni());
+					
+					if(bp.getAmount() == null) {
+						bp.setAmount(0.00);
+					}else {
+						bp.setAmount(bp.getAmount());
+					}
+					
+					if(bp.getDepositAmount() == null) {
+						bp.setDepositAmount(0.00);
+					}else {
+						bp.setDepositAmount(bp.getDepositAmount());
+					}
+					
+					if(bp.getRetiroAmount() == null) {
+						bp.setRetiroAmount(0.00);;
+					}else {
+						bp.setRetiroAmount(bp.getRetiroAmount());
+					}
+					
+					return service.save(bp);
+				});
 	}
 }
