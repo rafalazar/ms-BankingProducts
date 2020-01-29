@@ -50,22 +50,67 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Mono<BankingProduct> update(BankingProduct bp, String id) {
 		return repo.findById(id)
 				.flatMap(b -> {
+					//Fecha joinAt
 					if(bp.getJointAt() == null) {
 						b.setJointAt(new Date());
+					}else {
+						b.setJointAt(bp.getJointAt());
 					}
-					
+					//Fecha updateAt
 					if(bp.getUpdateAt() == null) {
 						b.setUpdateAt(new Date());
+					}else {
+						b.setUpdateAt(bp.getUpdateAt());
 					}
 					
-					b.setProductName(bp.getProductName());
-					b.setClientType(bp.getClientType());
-					b.setNumAccount(bp.getNumAccount());
-					b.setNameOwner(bp.getNameOwner());
-					b.setNumDoc(bp.getNumDoc());
-					b.setAmount(bp.getAmount());
-					b.setDepositAmount(bp.getDepositAmount());
-					b.setRetiroAmount(bp.getRetiroAmount());
+					if(bp.getProductName() == null) {
+						b.setProductName(b.getProductName());
+					}else {
+						b.setProductName(bp.getProductName());
+					}
+					
+					//1
+					if(bp.getClientType() == null) {
+						b.setClientType(b.getClientType());
+					}else {
+						b.setClientType(bp.getClientType());
+					}
+					//2
+					if(bp.getNumAccount() == null) {
+						b.setNumAccount(b.getNumAccount());
+					}else {
+						b.setNumAccount(bp.getNumAccount());
+					}
+					//3
+					if(bp.getNameOwner() == null) {
+						b.setNameOwner(b.getNameOwner());
+					}else {
+						b.setNameOwner(bp.getNameOwner());
+					}
+					//4
+					if(bp.getNumDoc() == null) {
+						b.setNumDoc(b.getNumDoc());
+					}else {
+						b.setNumDoc(bp.getNumDoc());
+					}
+					//5
+					if(bp.getAmount() == null) {
+						b.setAmount(0.00);
+					}else {
+						b.setAmount(bp.getAmount());
+					}
+					//6
+					if(bp.getDepositAmount() == null) {
+						b.setDepositAmount(0.00);
+					}else {
+						b.setDepositAmount(bp.getDepositAmount());
+					}
+					//7
+					if(bp.getRetiroAmount() == null) {
+						b.setRetiroAmount(0.00);
+					}else {
+						b.setRetiroAmount(bp.getRetiroAmount());
+					}
 					
 					return repo.save(b);
 				});
@@ -93,6 +138,11 @@ public class BankingProductServiceImpl implements BankingProductService{
 	@Override
 	public Flux<BankingProduct> findByType(String clientType) {
 		return repo.findByType(clientType);
+	}
+
+	@Override
+	public Mono<ClientDto> createById(String id) {
+		return client.createById(id);
 	}
 
 }
