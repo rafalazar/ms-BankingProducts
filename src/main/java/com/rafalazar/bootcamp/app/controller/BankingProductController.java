@@ -86,9 +86,19 @@ public class BankingProductController {
 	}
 	
 	//BUSCAR UNA CUENTA POR EL BANCO AL QUE PERTENECE
-	@GetMapping("findByBank/{bank}")
+	@GetMapping("/findByBank/{bank}")
 	public Mono<ResponseEntity<Flux<BankingProduct>>> findByBank(@PathVariable("bank") String bank){
 		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByBank(bank)));
+	}
+	
+	@PostMapping("/depositAmount/{id}")
+	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+		return service.depositAmount(id,b.getDepositAmount());
+	}
+	
+	@PostMapping("/retiroAmount/{id}")
+	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+		return service.retiroAmount(id, b.getRetiroAmount());
 	}
 
 	// --------------------------------->>>>>>>>>>>>>>>>

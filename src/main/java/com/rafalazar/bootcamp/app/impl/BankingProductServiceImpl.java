@@ -129,7 +129,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 					}
 					//Amount
 					if(bp.getAmount() == null) {
-						b.setAmount(0.00);
+						b.setAmount(b.getAmount());
 					}else {
 						b.setAmount(bp.getAmount());
 					}
@@ -200,6 +200,42 @@ public class BankingProductServiceImpl implements BankingProductService{
 	@Override
 	public Flux<BankingProduct> findByBank(String bank) {
 		return repo.findByBank(bank);
+	}
+
+	@Override
+	public Mono<BankingProduct> depositAmount(String id, Double bp) {
+		return repo.findById(id)
+				.flatMap(b -> {
+					if(b.getDepositAmount() != 0.0 || b.getDepositAmount() != null) {
+						b.setDepositAmount(b.getDepositAmount() + bp);
+						b.setAmount(b.getAmount() + b.getDepositAmount());
+						b.setDepositAmount(0.0);
+					}else {
+						b.setDepositAmount(bp);
+						b.setAmount(b.getAmount() + b.getDepositAmount());
+						b.setDepositAmount(0.0);
+					}
+					
+					return repo.save(b);
+				});
+	}
+
+	@Override
+	public Mono<BankingProduct> retiroAmount(String id, Double bp) {
+		return repo.findById(id)
+				.flatMap(b -> {
+					if(b.getRetiroAmount() != 0.0 || b.getRetiroAmount() != null) {
+						b.setRetiroAmount(b.getRetiroAmount() + bp);
+						b.setAmount(b.getAmount() - b.getRetiroAmount());
+						b.setRetiroAmount(0.0);
+					}else {
+						b.setRetiroAmount(bp);
+						b.setAmount(b.getAmount() - b.getRetiroAmount());
+						b.setRetiroAmount(0.0);
+					}
+					
+					return repo.save(b);
+				});
 	}
 
 	

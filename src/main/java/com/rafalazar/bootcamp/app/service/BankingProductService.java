@@ -22,10 +22,13 @@ public interface BankingProductService {
 	//Métodos propios
 	public Mono<BankingProduct> findByNumDoc(String numDoc);
 	
-//	public Flux<BankingProduct> findByType(String clientType);
 	public Flux<BankingProduct> findByType(String clientType);
 	
 	public Flux<BankingProduct> findByBank(String bank);
+	
+	public Mono<BankingProduct> depositAmount(String id, Double bp);
+	
+	public Mono<BankingProduct> retiroAmount(String id, Double bp);
 	
 	///-------------------->
 	//Métodos del webClient
