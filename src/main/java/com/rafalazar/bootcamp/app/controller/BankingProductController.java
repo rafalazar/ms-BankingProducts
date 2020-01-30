@@ -152,4 +152,10 @@ public class BankingProductController {
 					return service.save(bp);
 				});
 	}
+	
+	@PutMapping("/updateBank/{id}")
+	public Mono<ClientDto> updateBank(@PathVariable("id") String id, @RequestBody ClientDto dto){
+		String bank = dto.getBank();
+		return service.updateBank(bank, id);
+	}
 }

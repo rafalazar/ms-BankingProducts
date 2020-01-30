@@ -34,4 +34,6 @@ public interface BankingProductService {
 	
 	public Mono<ClientDto> createById(String id);
 	
+	public Mono<ClientDto> updateBank(String bank, String id);
+	
 }

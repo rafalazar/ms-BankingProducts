@@ -166,6 +166,20 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Mono<ClientDto> createById(String id) {
 		return client.createById(id);
 	}
+	
+	@Override
+	public Mono<ClientDto> updateBank(String bank, String id) {
+		return client.createById(id)
+				.flatMap(c -> {
+					if(c.getBank() == null) {
+						c.setBank(c.getBank());
+					}else {
+						c.setBank(bank);
+					}
+					
+					return client.save(c);
+				});
+	}
 
 	//---------------------------------------->
 	//Métodos propios
@@ -187,5 +201,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Flux<BankingProduct> findByBank(String bank) {
 		return repo.findByBank(bank);
 	}
+
+	
 
 }
