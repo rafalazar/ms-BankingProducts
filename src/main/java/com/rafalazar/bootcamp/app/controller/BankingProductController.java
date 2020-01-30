@@ -79,9 +79,16 @@ public class BankingProductController {
 				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
 	
+	//BUSCAR UNA CUENTA POR EL TIPO DE CLIENTE
 	@GetMapping("/findByType/{clientType}")
 	public Mono<ResponseEntity<Flux<BankingProduct>>> findByType(@PathVariable("clientType") String clientType){
 		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByType(clientType)));
+	}
+	
+	//BUSCAR UNA CUENTA POR EL BANCO AL QUE PERTENECE
+	@GetMapping("findByBank/{bank}")
+	public Mono<ResponseEntity<Flux<BankingProduct>>> findByBank(@PathVariable("bank") String bank){
+		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByBank(bank)));
 	}
 
 	// --------------------------------->>>>>>>>>>>>>>>>
@@ -94,34 +101,48 @@ public class BankingProductController {
 	
 	@GetMapping("/createById/{id}")
 	Mono<BankingProduct> createById(@PathVariable("id") String id, @RequestBody BankingProduct bp){
+		//Fecha joinAt
 		if(bp.getJointAt() == null) {
 			bp.setJointAt(new Date());
+		}else {
+			bp.setJointAt(bp.getJointAt());
 		}
-		
+		//Fecha updateAt
 		if(bp.getUpdateAt() == null) {
 			bp.setUpdateAt(new Date());
+		}else {
+			bp.setUpdateAt(bp.getUpdateAt());
 		}
 		
 		return service.createById(id)
 				.flatMap(p -> {
-					bp.setProductName(bp.getProductName());
-					bp.setClientType(p.getType());
-					bp.setNumAccount(UUID.randomUUID().toString());
-					bp.setNameOwner(p.getName()+ " " +p.getLasName());
-					bp.setNumDoc(p.getDni());
 					
+					//Bank
+					bp.setBank(p.getBank());
+					//ProductName
+					bp.setProductName(bp.getProductName());
+					//ClientType
+					bp.setClientType(p.getType());
+					//NumAccount - Random
+					bp.setNumAccount(UUID.randomUUID().toString());
+					//NameOwner
+					bp.setNameOwner(p.getFullName());
+					//NumDoc
+					bp.setNumDoc(p.getNumDoc());
+					
+					//Amount
 					if(bp.getAmount() == null) {
 						bp.setAmount(0.00);
 					}else {
 						bp.setAmount(bp.getAmount());
 					}
-					
+					//DepositAmount
 					if(bp.getDepositAmount() == null) {
 						bp.setDepositAmount(0.00);
 					}else {
 						bp.setDepositAmount(bp.getDepositAmount());
 					}
-					
+					//RetiroAmount
 					if(bp.getRetiroAmount() == null) {
 						bp.setRetiroAmount(0.00);;
 					}else {

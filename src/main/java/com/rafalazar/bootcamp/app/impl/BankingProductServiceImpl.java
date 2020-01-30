@@ -1,7 +1,10 @@
 package com.rafalazar.bootcamp.app.impl;
 
 import java.util.Date;
+import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ import reactor.core.publisher.Mono;
 														
 @Service
 public class BankingProductServiceImpl implements BankingProductService{
+	
+	private static final Logger log = LoggerFactory.getLogger(BankingProductServiceImpl.class);
 	
 	@Autowired
 	private BankingProductRepository repo;
@@ -37,10 +42,32 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Mono<BankingProduct> save(BankingProduct bp) {
 		if(bp.getJointAt() == null) {
 			bp.setJointAt(new Date());
+		}else {
+			bp.setJointAt(bp.getJointAt());
 		}
 		
 		if(bp.getUpdateAt() == null) {
 			bp.setUpdateAt(new Date());
+		}else {
+			bp.setUpdateAt(bp.getUpdateAt());
+		}
+		
+		if(bp.getNumAccount() == null) {
+			bp.setNumAccount(UUID.randomUUID().toString());
+		}else {
+			bp.setNumAccount(bp.getNumAccount());
+		}
+		
+		if(bp.getDepositAmount() == null) {
+			bp.setDepositAmount(0.00);;
+		}else {
+			bp.setDepositAmount(bp.getDepositAmount());
+		}
+		
+		if(bp.getRetiroAmount() == null) {
+			bp.setRetiroAmount(0.00);
+		}else {
+			bp.setRetiroAmount(bp.getRetiroAmount());
 		}
 		
 		return repo.save(bp);
@@ -63,49 +90,56 @@ public class BankingProductServiceImpl implements BankingProductService{
 						b.setUpdateAt(bp.getUpdateAt());
 					}
 					
+					//Bank
+					if(bp.getBank() == null) {
+						b.setBank(b.getBank());
+					}else {
+						b.setBank(bp.getBank());
+					}
+					//ProductName
 					if(bp.getProductName() == null) {
 						b.setProductName(b.getProductName());
 					}else {
 						b.setProductName(bp.getProductName());
 					}
 					
-					//1
+					//Type
 					if(bp.getClientType() == null) {
 						b.setClientType(b.getClientType());
 					}else {
 						b.setClientType(bp.getClientType());
 					}
-					//2
+					//NumAccount
 					if(bp.getNumAccount() == null) {
 						b.setNumAccount(b.getNumAccount());
 					}else {
 						b.setNumAccount(bp.getNumAccount());
 					}
-					//3
+					//NameOwner
 					if(bp.getNameOwner() == null) {
 						b.setNameOwner(b.getNameOwner());
 					}else {
 						b.setNameOwner(bp.getNameOwner());
 					}
-					//4
+					//NumDoc
 					if(bp.getNumDoc() == null) {
 						b.setNumDoc(b.getNumDoc());
 					}else {
 						b.setNumDoc(bp.getNumDoc());
 					}
-					//5
+					//Amount
 					if(bp.getAmount() == null) {
 						b.setAmount(0.00);
 					}else {
 						b.setAmount(bp.getAmount());
 					}
-					//6
+					//DepositAmount
 					if(bp.getDepositAmount() == null) {
 						b.setDepositAmount(0.00);
 					}else {
 						b.setDepositAmount(bp.getDepositAmount());
 					}
-					//7
+					//RetiroAmount
 					if(bp.getRetiroAmount() == null) {
 						b.setRetiroAmount(0.00);
 					}else {
@@ -127,22 +161,31 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Flux<ClientDto> findAllClients() {
 		return client.findAllClients();
 	}
-
-	//---------------------------------------->
-	//Métodos propios
-	@Override
-	public Mono<BankingProduct> findByNumDoc(String numDoc) {
-		return repo.findByNumDoc(numDoc);
-	}
-
-	@Override
-	public Flux<BankingProduct> findByType(String clientType) {
-		return repo.findByType(clientType);
-	}
-
+	
 	@Override
 	public Mono<ClientDto> createById(String id) {
 		return client.createById(id);
+	}
+
+	//---------------------------------------->
+	//Métodos propios
+	
+	//---------------------Buscar_Por_NumDoc
+	@Override
+	public Mono<BankingProduct> findByNumDoc(String numDoc) {
+		
+		return repo.findByNumDoc(numDoc);
+	}
+	//---------------------Buscar_por_Tipo
+	@Override
+	public Flux<BankingProduct> findByType(String clientType) {
+		
+		return repo.findByType(clientType);
+	}
+	//-------------------Buscar_por_Banco
+	@Override
+	public Flux<BankingProduct> findByBank(String bank) {
+		return repo.findByBank(bank);
 	}
 
 }

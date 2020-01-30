@@ -17,5 +17,9 @@ public interface BankingProductRepository extends ReactiveMongoRepository<Bankin
 	@Query("{'clientType' : ?0}")
 	public Flux<BankingProduct> findByType(String clientType);
 	
+	//Buscar por banco
+	@Query("{'bank' : ?0}")
+	public Flux<BankingProduct> findByBank(String bank);
+	
 }
  

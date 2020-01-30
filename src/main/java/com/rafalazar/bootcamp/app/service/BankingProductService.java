@@ -25,6 +25,8 @@ public interface BankingProductService {
 //	public Flux<BankingProduct> findByType(String clientType);
 	public Flux<BankingProduct> findByType(String clientType);
 	
+	public Flux<BankingProduct> findByBank(String bank);
+	
 	///-------------------->
 	//Métodos del webClient
 	

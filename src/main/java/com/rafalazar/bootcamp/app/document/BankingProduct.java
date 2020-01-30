@@ -15,11 +15,11 @@ public class BankingProduct {
 	
 	@Id
 	private String id;
+	private String bank;
 	private String productName;
 	private String clientType;
 	private String numAccount;
 	private String nameOwner;
-	//@Indexed(unique = true)
 	private String numDoc;
 	private Double amount;
 	private Double depositAmount;
