@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rafalazar.bootcamp.app.client.ClienteClient;
+import com.rafalazar.bootcamp.app.client.CreditClient;
 import com.rafalazar.bootcamp.app.document.BankingProduct;
 import com.rafalazar.bootcamp.app.dto.ClientDto;
+import com.rafalazar.bootcamp.app.dto.CreditDto;
 import com.rafalazar.bootcamp.app.repository.BankingProductRepository;
 import com.rafalazar.bootcamp.app.service.BankingProductService;
 
@@ -27,6 +29,9 @@ public class BankingProductServiceImpl implements BankingProductService{
 	
 	@Autowired
 	private ClienteClient client;
+	
+	@Autowired
+	private CreditClient cclient;
 	
 	@Override
 	public Flux<BankingProduct> findAll() {
@@ -151,7 +156,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 	}
 
 	//-------------------------------------->
-	//Métodos del cliente
+	//Métodos del cliente Client
 	@Override
 	public Flux<ClientDto> findAllClients() {
 		return client.findAllClients();
@@ -232,6 +237,22 @@ public class BankingProductServiceImpl implements BankingProductService{
 //					return repo.save(b);
 //				});
 //	}
+	
+	//-------------->
+	// Métodos del cliente Crédito
+	@Override
+	public Mono<CreditDto> deposit(Double amount, String id) {
+		return cclient.findById(id);
+		//falta implementar!
+//				.flatMap(c -> {
+//					c.set
+//				});
+	}
+
+	@Override
+	public Mono<CreditDto> retiro(Double amount, String id) {
+		return null;
+	}
 
 	
 
