@@ -31,7 +31,7 @@ public class BankingProductController {
 	@Autowired
 	private BankingProductService service;
 
-	// LISTAR TODOS LOS CLIENTES
+	// LISTAR TODOS LOS PRODUCTOS BANCARIOS
 //	@GetMapping("/findAll")
 //	public Mono<ResponseEntity<Flux<BankingProduct>>> findAll() {
 //		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findAll()));
@@ -41,29 +41,29 @@ public class BankingProductController {
 		return service.findAll();
 	}
 
-	// LISTAR UN CLIENTE POR SU ID
+	// LISTAR UN PRODUCTO POR SU ID
 	@GetMapping("/findById/{id}")
 	public Mono<BankingProduct> findById(@PathVariable("id") String id) {
 		return service.findById(id);
 	}
 
-	// CREAR UN CLIENTE
+	// CREAR UN PRODUCTO
 	@PostMapping("/create")
 	public Mono<ResponseEntity<BankingProduct>> create(@RequestBody BankingProduct bp) {
-		return service.save(bp).map(b -> ResponseEntity.created(URI.create("/bankingProduct".concat(b.getId())))
+		return service.save(bp).map(b -> ResponseEntity.created(URI.create("/bankingProduct/".concat(b.getId())))
 				.contentType(MediaType.APPLICATION_JSON).body(b));
 	}
 
-	// ACTUALIZAR UN CLIENTE
+	// ACTUALIZAR UN PRODUCTO
 	@PutMapping("/update/{id}")
 	public Mono<ResponseEntity<BankingProduct>> update(@PathVariable("id") String id, @RequestBody BankingProduct bp) {
 		return service.update(bp, id)
-				.map(b -> ResponseEntity.created(URI.create("/bankingProduct".concat(b.getId())))
+				.map(b -> ResponseEntity.created(URI.create("/bankingProduct/".concat(b.getId())))
 						.contentType(MediaType.APPLICATION_JSON).body(b))
 				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
 
-	// ELIMINAR UN CLIENTE
+	// ELIMINAR UN PRODUCTO
 	@DeleteMapping("/delete/{id}")
 	public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
 		return service.findById(id).flatMap(b -> {
