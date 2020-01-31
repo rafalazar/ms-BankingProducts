@@ -51,7 +51,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 		}else {
 			bp.setUpdateAt(bp.getUpdateAt());
 		}
-		
+		//-----------------------
 		if(bp.getNumAccount() == null) {
 			bp.setNumAccount(UUID.randomUUID().toString());
 		}else {
