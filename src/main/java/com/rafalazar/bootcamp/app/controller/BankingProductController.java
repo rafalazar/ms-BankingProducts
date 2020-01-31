@@ -91,15 +91,15 @@ public class BankingProductController {
 		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByBank(bank)));
 	}
 	
-	@PostMapping("/depositAmount/{id}")
-	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-		return service.depositAmount(id,b.getDepositAmount());
-	}
-	
-	@PostMapping("/retiroAmount/{id}")
-	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-		return service.retiroAmount(id, b.getRetiroAmount());
-	}
+//	@PostMapping("/depositAmount/{id}")
+//	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+//		return service.depositAmount(id,b.getDepositAmount());
+//	}
+//	
+//	@PostMapping("/retiroAmount/{id}")
+//	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+//		return service.retiroAmount(id, b.getRetiroAmount());
+//	}
 
 	// --------------------------------->>>>>>>>>>>>>>>>
 	// Métodos del WEB-CLIENT
@@ -146,17 +146,10 @@ public class BankingProductController {
 					}else {
 						bp.setAmount(bp.getAmount());
 					}
-					//DepositAmount
-					if(bp.getDepositAmount() == null) {
-						bp.setDepositAmount(0.00);
-					}else {
-						bp.setDepositAmount(bp.getDepositAmount());
-					}
-					//RetiroAmount
-					if(bp.getRetiroAmount() == null) {
-						bp.setRetiroAmount(0.00);;
-					}else {
-						bp.setRetiroAmount(bp.getRetiroAmount());
+					
+					//amountAvailable - nuevo campo!
+					if(bp.getAmountAvailable() == null) {
+						bp.setAmountAvailable(bp.getAmount());
 					}
 					
 					return service.save(bp);
