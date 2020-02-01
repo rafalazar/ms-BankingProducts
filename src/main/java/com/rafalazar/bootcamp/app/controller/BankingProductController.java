@@ -167,4 +167,9 @@ public class BankingProductController {
 	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id){
 		return service.deposit(Double.parseDouble(amount), id);
 	}
+	
+	@PutMapping("retiro/{amount}/{id}")
+	public Mono<CreditDto> retiro(@PathVariable("amount") String amount, @PathVariable("id") String id){
+		return service.retiro(Double.parseDouble(amount), id);
+	}
 }

@@ -253,7 +253,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 
 	@Override
 	public Mono<CreditDto> retiro(Double amount, String id) {
-		return null;
+		return cclient.retiro(amount, id);
 	}
 
 	
