@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rafalazar.bootcamp.app.document.BankingProduct;
 import com.rafalazar.bootcamp.app.dto.ClientDto;
+import com.rafalazar.bootcamp.app.dto.CreditDto;
 import com.rafalazar.bootcamp.app.service.BankingProductService;
 
 import reactor.core.publisher.Flux;
@@ -160,5 +161,10 @@ public class BankingProductController {
 	public Mono<ClientDto> updateBank(@PathVariable("id") String id, @RequestBody ClientDto dto){
 		String bank = dto.getBank();
 		return service.updateBank(bank, id);
+	}
+	
+	@PutMapping("/deposit/{amount}/{id}")
+	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id){
+		return service.deposit(Double.parseDouble(amount), id);
 	}
 }
