@@ -21,6 +21,9 @@ public interface BankingProductRepository extends ReactiveMongoRepository<Bankin
 	@Query("{'bank' : ?0}")
 	public Flux<BankingProduct> findByBank(String bank);
 	
+	@Query("{'amount' : ?0}")
+	public Mono<BankingProduct> saveAmount(Double amount);
+	
 //	//RetiroBancario
 //	@Query("{'id' : ?0}")
 //	public Mono<BankingProduct> depositAmount(String id, Double bp);

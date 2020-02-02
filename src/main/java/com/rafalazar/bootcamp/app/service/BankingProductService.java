@@ -40,5 +40,5 @@ public interface BankingProductService {
 	
 	public Mono<CreditDto> deposit(Double amount, String id, String numDoc);
 	
-	public Mono<CreditDto> retiro(Double amount, String id);
+	public Mono<CreditDto> retiro(Double amount, String id, String numDoc);
 }

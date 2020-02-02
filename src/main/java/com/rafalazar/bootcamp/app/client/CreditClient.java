@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.rafalazar.bootcamp.app.dto.CreditDto;
@@ -61,6 +63,16 @@ public class CreditClient {
 				.uri("/retiro/{amount}/{id}", path)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
+				.retrieve()
+				.bodyToMono(CreditDto.class);
+	}
+	
+	public Mono<CreditDto> save(CreditDto dto){
+		return client.post()
+				.uri("/create")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(BodyInserters.fromValue(dto))
 				.retrieve()
 				.bodyToMono(CreditDto.class);
 	}
