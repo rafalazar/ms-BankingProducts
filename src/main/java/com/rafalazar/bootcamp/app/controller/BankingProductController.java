@@ -31,16 +31,12 @@ public class BankingProductController {
 
 	@Autowired
 	private BankingProductService service;
-<<<<<<< HEAD
 
 	// LISTAR TODOS LOS PRODUCTOS BANCARIOS
 //	@GetMapping("/findAll")
 //	public Mono<ResponseEntity<Flux<BankingProduct>>> findAll() {
 //		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findAll()));
 //	}
-=======
-	
->>>>>>> experimental
 	@GetMapping("/findAll")
 	public Flux<BankingProduct> findAll(){
 		return service.findAll();

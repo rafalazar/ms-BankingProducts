@@ -47,37 +47,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 
 	@Override
 	public Mono<BankingProduct> save(BankingProduct bp) {
-<<<<<<< HEAD
-		if(bp.getJointAt() == null) {
-			bp.setJointAt(new Date());
-		}else {
-			bp.setJointAt(bp.getJointAt());
-		}
-		
-		if(bp.getUpdateAt() == null) {
-			bp.setUpdateAt(new Date());
-		}else {
-			bp.setUpdateAt(bp.getUpdateAt());
-		}
-		//-----------------------
-		if(bp.getNumAccount() == null) {
-			bp.setNumAccount(UUID.randomUUID().toString());
-		}else {
-			bp.setNumAccount(bp.getNumAccount());
-		}
-		
-		if(bp.getDepositAmount() == null) {
-			bp.setDepositAmount(0.00);;
-		}else {
-			bp.setDepositAmount(bp.getDepositAmount());
-		}
-		
-		if(bp.getRetiroAmount() == null) {
-			bp.setRetiroAmount(0.00);
-		}else {
-			bp.setRetiroAmount(bp.getRetiroAmount());
-		}
-=======
+
 //		if(bp.getJointAt() == null) {
 //			bp.setJointAt(new Date());
 //		}else {
@@ -109,7 +79,6 @@ public class BankingProductServiceImpl implements BankingProductService{
 //		}else {
 //			bp.setAmountAvailable(bp.getAmountAvailable());
 //		}
->>>>>>> experimental
 		
 		return repo.save(bp);
 	}
