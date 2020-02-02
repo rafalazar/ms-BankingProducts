@@ -13,7 +13,6 @@ public interface BankingProductRepository extends ReactiveMongoRepository<Bankin
 	
 	public Mono<BankingProduct> findByNumDoc(String numDoc);
 	
-	//public Flux<BankingProduct> findByType(String clientType);
 	@Query("{'clientType' : ?0}")
 	public Flux<BankingProduct> findByType(String clientType);
 	
@@ -21,15 +20,8 @@ public interface BankingProductRepository extends ReactiveMongoRepository<Bankin
 	@Query("{'bank' : ?0}")
 	public Flux<BankingProduct> findByBank(String bank);
 	
-	@Query("{'amount' : ?0}")
-	public Mono<BankingProduct> saveAmount(Double amount);
-	
-//	//RetiroBancario
-//	@Query("{'id' : ?0}")
-//	public Mono<BankingProduct> depositAmount(String id, Double bp);
-//	//DepositoBancario
-//	@Query("{'id' : ?0}")
-//	public Mono<BankingProduct> retiroAmount(String id, Double bp);
+	@Query("{'numAccount' : ?0}")
+	public Mono<BankingProduct> findByNumAccount(String numAccount);
 	
 }
  

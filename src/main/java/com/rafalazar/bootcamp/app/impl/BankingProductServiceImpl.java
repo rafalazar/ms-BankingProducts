@@ -205,6 +205,43 @@ public class BankingProductServiceImpl implements BankingProductService{
 	public Flux<BankingProduct> findByBank(String bank) {
 		return repo.findByBank(bank);
 	}
+	
+	//------------------- Buscar por número de cuenta
+	@Override
+	public Mono<BankingProduct> findByNumAccount(String numAccount) {
+		return repo.findByNumAccount(numAccount);
+	}
+	
+	//------------------ Depositar 
+	@Override
+	public Mono<BankingProduct> depositB(Double amount, String numAccount) {
+		return repo.findByNumAccount(numAccount)
+				.flatMap(b -> {
+					if((b.getAmountAvailable() + amount) > b.getAmount()) {
+						return Mono.error(new InterruptedException("No se puede superar el límiete"));
+					}else {
+						b.setAmountAvailable(b.getAmountAvailable() + amount);
+						
+						return repo.save(b);
+					}
+				});
+	}
+	//------------------ Retirar
+	@Override
+	public Mono<BankingProduct> retiroB(Double amount, String numAccount) {
+		return repo.findByNumAccount(numAccount)
+				.flatMap(b -> {
+					if(amount > b.getAmountAvailable()) {
+						return Mono.error(new InterruptedException("No puede retirar un monto superior al total."));
+					}else if(amount > b.getAmountAvailable()){
+						return Mono.error(new InterruptedException("No puede retirar un monto superior al disponible."));
+					}else {
+						b.setAmountAvailable(b.getAmountAvailable() - amount);
+						
+						return repo.save(b);
+					}
+				});
+	}
 
 //	@Override
 //	public Mono<BankingProduct> depositAmount(String id, Double bp) {
@@ -274,7 +311,5 @@ public class BankingProductServiceImpl implements BankingProductService{
 					return cclient.retiro(amount, id);
 				});
 	}
-
-	
 
 }

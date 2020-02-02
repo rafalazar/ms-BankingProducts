@@ -27,6 +27,12 @@ public interface BankingProductService {
 	
 	public Flux<BankingProduct> findByBank(String bank);
 	
+	public Mono<BankingProduct> findByNumAccount(String numAccount);
+	
+	public Mono<BankingProduct> depositB(Double amount, String numAccount); //Experimental
+	
+	public Mono<BankingProduct> retiroB(Double amount, String numAccount); //Experimental
+	
 	///-------------------->
 	//Métodos del webClient Cliente
 	
