@@ -92,15 +92,25 @@ public class BankingProductController {
 		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByBank(bank)));
 	}
 	
-//	@PostMapping("/depositAmount/{id}")
-//	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-//		return service.depositAmount(id,b.getDepositAmount());
-//	}
-//	
-//	@PostMapping("/retiroAmount/{id}")
-//	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-//		return service.retiroAmount(id, b.getRetiroAmount());
-//	}
+	//Buscar por número de cuenta
+	@GetMapping("/findByNumAccount/{numAccount}")
+	public Mono<ResponseEntity<BankingProduct>> findByNumAccount(@PathVariable("numAccount") String numAccount){
+		return service.findByNumAccount(numAccount)
+				.map(b -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(b))
+				.defaultIfEmpty(ResponseEntity.notFound().build());
+	}
+	
+	//Depositar
+	@PutMapping("/depositB/{amount}/{numAccount}")
+	public Mono<BankingProduct> depositB(@PathVariable("amount") String amount, @PathVariable("numAccount") String numAccount){
+		return service.depositB(Double.parseDouble(amount), numAccount);
+	}
+	
+	//Retirar
+	@PutMapping("/retiroB/{amount}/{numAccount}")
+	public Mono<BankingProduct> retiroB(@PathVariable("amount") String amount, @PathVariable("numAccount") String numAccount){
+		return service.retiroB(Double.parseDouble(amount), numAccount);
+	}
 
 	// --------------------------------->>>>>>>>>>>>>>>>
 	// Métodos del WEB-CLIENT
