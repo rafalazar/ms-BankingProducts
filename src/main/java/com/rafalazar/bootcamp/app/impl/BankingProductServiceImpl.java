@@ -3,6 +3,8 @@ package com.rafalazar.bootcamp.app.impl;
 import java.util.Date;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class BankingProductServiceImpl implements BankingProductService{
 	
-	//private static final Logger log = LoggerFactory.getLogger(BankingProductServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(BankingProductServiceImpl.class);
 	
 	@Autowired
 	private BankingProductRepository repo;
@@ -45,35 +47,37 @@ public class BankingProductServiceImpl implements BankingProductService{
 
 	@Override
 	public Mono<BankingProduct> save(BankingProduct bp) {
-		if(bp.getJointAt() == null) {
-			bp.setJointAt(new Date());
-		}else {
-			bp.setJointAt(bp.getJointAt());
-		}
-		
-		if(bp.getUpdateAt() == null) {
-			bp.setUpdateAt(new Date());
-		}else {
-			bp.setUpdateAt(bp.getUpdateAt());
-		}
-		
-		if(bp.getNumAccount() == null) {
-			bp.setNumAccount(UUID.randomUUID().toString());
-		}else {
-			bp.setNumAccount(bp.getNumAccount());
-		}
-		
-		//Validando el amount
-		if(bp.getAmount() == null) {
-			bp.setAmount(0.0);
-		}else {
-			bp.setAmount(bp.getAmount());
-		}
-		
-		//Nuevo campo
-		if(bp.getAmountAvailable() == null) {
-			bp.setAmountAvailable(bp.getAmount());
-		}
+//		if(bp.getJointAt() == null) {
+//			bp.setJointAt(new Date());
+//		}else {
+//			bp.setJointAt(bp.getJointAt());
+//		}
+//		
+//		if(bp.getUpdateAt() == null) {
+//			bp.setUpdateAt(new Date());
+//		}else {
+//			bp.setUpdateAt(bp.getUpdateAt());
+//		}
+//		
+//		if(bp.getNumAccount() == null) {
+//			bp.setNumAccount(UUID.randomUUID().toString());
+//		}else {
+//			bp.setNumAccount(bp.getNumAccount());
+//		}
+//		
+//		//Validando el amount
+//		if(bp.getAmount() == null) {
+//			bp.setAmount(0.0);
+//		}else {
+//			bp.setAmount(bp.getAmount());
+//		}
+//		
+//		//Nuevo campo
+//		if(bp.getAmountAvailable() == null) {
+//			bp.setAmountAvailable(bp.getAmount());
+//		}else {
+//			bp.setAmountAvailable(bp.getAmountAvailable());
+//		}
 		
 		return repo.save(bp);
 	}
@@ -241,14 +245,17 @@ public class BankingProductServiceImpl implements BankingProductService{
 	//-------------->
 	// Métodos del cliente Crédito
 	@Override
-	public Mono<CreditDto> deposit(Double amount, String id) {
+	public Mono<CreditDto> deposit(Double amount, String id, String numDoc) {
 		
-		return cclient.deposit(amount, id);
-		
-		//return cclient.findById(id);
-		//falta implementar!
-//				.flatMap(c -> {
-//				});
+		return repo.findByNumDoc(numDoc).
+				flatMap(b -> {
+					
+					b.setAmountAvailable(b.getAmountAvailable() - amount);
+					
+					repo.save(b);
+					
+					return cclient.deposit(amount, id);
+				});
 	}
 
 	@Override

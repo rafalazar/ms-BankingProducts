@@ -31,12 +31,7 @@ public class BankingProductController {
 
 	@Autowired
 	private BankingProductService service;
-
-	// LISTAR TODOS LOS CLIENTES
-//	@GetMapping("/findAll")
-//	public Mono<ResponseEntity<Flux<BankingProduct>>> findAll() {
-//		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findAll()));
-//	}
+	
 	@GetMapping("/findAll")
 	public Flux<BankingProduct> findAll(){
 		return service.findAll();
@@ -51,7 +46,7 @@ public class BankingProductController {
 	// CREAR UN CLIENTE
 	@PostMapping("/create")
 	public Mono<ResponseEntity<BankingProduct>> create(@RequestBody BankingProduct bp) {
-		return service.save(bp).map(b -> ResponseEntity.created(URI.create("/bankingProduct".concat(b.getId())))
+		return service.save(bp).map(b -> ResponseEntity.created(URI.create("/bankingProduct/".concat(b.getId())))
 				.contentType(MediaType.APPLICATION_JSON).body(b));
 	}
 
@@ -59,7 +54,7 @@ public class BankingProductController {
 	@PutMapping("/update/{id}")
 	public Mono<ResponseEntity<BankingProduct>> update(@PathVariable("id") String id, @RequestBody BankingProduct bp) {
 		return service.update(bp, id)
-				.map(b -> ResponseEntity.created(URI.create("/bankingProduct".concat(b.getId())))
+				.map(b -> ResponseEntity.created(URI.create("/bankingProduct/".concat(b.getId())))
 						.contentType(MediaType.APPLICATION_JSON).body(b))
 				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
@@ -151,6 +146,8 @@ public class BankingProductController {
 					//amountAvailable - nuevo campo!
 					if(bp.getAmountAvailable() == null) {
 						bp.setAmountAvailable(bp.getAmount());
+					}else {
+						bp.setAmountAvailable(bp.getAmountAvailable());
 					}
 					
 					return service.save(bp);
@@ -163,9 +160,9 @@ public class BankingProductController {
 		return service.updateBank(bank, id);
 	}
 	
-	@PutMapping("/deposit/{amount}/{id}")
-	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id){
-		return service.deposit(Double.parseDouble(amount), id);
+	@PutMapping("/deposit/{amount}/{id}/{numDoc}")
+	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id, @PathVariable("numDoc") String numDoc){
+		return service.deposit(Double.parseDouble(amount), id, numDoc);
 	}
 	
 	@PutMapping("retiro/{amount}/{id}")

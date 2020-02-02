@@ -27,10 +27,6 @@ public interface BankingProductService {
 	
 	public Flux<BankingProduct> findByBank(String bank);
 	
-//	public Mono<BankingProduct> depositAmount(String id, Double bp);
-//	
-//	public Mono<BankingProduct> retiroAmount(String id, Double bp);
-	
 	///-------------------->
 	//Métodos del webClient Cliente
 	
@@ -42,7 +38,7 @@ public interface BankingProductService {
 	
 	//Método del webClient Crédito
 	
-	public Mono<CreditDto> deposit(Double amount, String id);
+	public Mono<CreditDto> deposit(Double amount, String id, String numDoc);
 	
 	public Mono<CreditDto> retiro(Double amount, String id);
 }
