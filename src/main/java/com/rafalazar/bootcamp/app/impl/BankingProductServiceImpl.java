@@ -252,15 +252,27 @@ public class BankingProductServiceImpl implements BankingProductService{
 					
 					b.setAmountAvailable(b.getAmountAvailable() - amount);
 					
-					repo.save(b);
+					repo.save(b).subscribe();
 					
+					log.info(b.getAmountAvailable().toString());
+						
 					return cclient.deposit(amount, id);
 				});
 	}
 
 	@Override
-	public Mono<CreditDto> retiro(Double amount, String id) {
-		return cclient.retiro(amount, id);
+	public Mono<CreditDto> retiro(Double amount, String id, String numDoc) {
+		
+		return repo.findByNumDoc(numDoc)
+				.flatMap(b -> {
+					b.setAmountAvailable(b.getAmountAvailable() + amount);
+					
+					repo.save(b).subscribe();
+					
+					log.info(b.getAmountAvailable().toString());
+					
+					return cclient.retiro(amount, id);
+				});
 	}
 
 	
