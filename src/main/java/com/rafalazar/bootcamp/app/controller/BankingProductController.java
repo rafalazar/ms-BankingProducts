@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rafalazar.bootcamp.app.document.BankingProduct;
 import com.rafalazar.bootcamp.app.dto.ClientDto;
+import com.rafalazar.bootcamp.app.dto.CreditDto;
 import com.rafalazar.bootcamp.app.service.BankingProductService;
 
 import reactor.core.publisher.Flux;
@@ -30,12 +31,16 @@ public class BankingProductController {
 
 	@Autowired
 	private BankingProductService service;
+<<<<<<< HEAD
 
 	// LISTAR TODOS LOS PRODUCTOS BANCARIOS
 //	@GetMapping("/findAll")
 //	public Mono<ResponseEntity<Flux<BankingProduct>>> findAll() {
 //		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findAll()));
 //	}
+=======
+	
+>>>>>>> experimental
 	@GetMapping("/findAll")
 	public Flux<BankingProduct> findAll(){
 		return service.findAll();
@@ -91,15 +96,15 @@ public class BankingProductController {
 		return Mono.just(ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(service.findByBank(bank)));
 	}
 	
-	@PostMapping("/depositAmount/{id}")
-	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-		return service.depositAmount(id,b.getDepositAmount());
-	}
-	
-	@PostMapping("/retiroAmount/{id}")
-	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
-		return service.retiroAmount(id, b.getRetiroAmount());
-	}
+//	@PostMapping("/depositAmount/{id}")
+//	public Mono<BankingProduct> depositAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+//		return service.depositAmount(id,b.getDepositAmount());
+//	}
+//	
+//	@PostMapping("/retiroAmount/{id}")
+//	public Mono<BankingProduct> retiroAmount(@PathVariable("id") String id, @RequestBody BankingProduct b){
+//		return service.retiroAmount(id, b.getRetiroAmount());
+//	}
 
 	// --------------------------------->>>>>>>>>>>>>>>>
 	// Métodos del WEB-CLIENT
@@ -146,17 +151,12 @@ public class BankingProductController {
 					}else {
 						bp.setAmount(bp.getAmount());
 					}
-					//DepositAmount
-					if(bp.getDepositAmount() == null) {
-						bp.setDepositAmount(0.00);
+					
+					//amountAvailable - nuevo campo!
+					if(bp.getAmountAvailable() == null) {
+						bp.setAmountAvailable(bp.getAmount());
 					}else {
-						bp.setDepositAmount(bp.getDepositAmount());
-					}
-					//RetiroAmount
-					if(bp.getRetiroAmount() == null) {
-						bp.setRetiroAmount(0.00);;
-					}else {
-						bp.setRetiroAmount(bp.getRetiroAmount());
+						bp.setAmountAvailable(bp.getAmountAvailable());
 					}
 					
 					return service.save(bp);
@@ -167,5 +167,15 @@ public class BankingProductController {
 	public Mono<ClientDto> updateBank(@PathVariable("id") String id, @RequestBody ClientDto dto){
 		String bank = dto.getBank();
 		return service.updateBank(bank, id);
+	}
+	
+	@PutMapping("/deposit/{amount}/{id}/{numDoc}")
+	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id, @PathVariable("numDoc") String numDoc){
+		return service.deposit(Double.parseDouble(amount), id, numDoc);
+	}
+	
+	@PutMapping("retiro/{amount}/{id}")
+	public Mono<CreditDto> retiro(@PathVariable("amount") String amount, @PathVariable("id") String id){
+		return service.retiro(Double.parseDouble(amount), id);
 	}
 }

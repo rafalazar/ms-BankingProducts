@@ -26,8 +26,10 @@ public class BankingProduct {
 	private String nameOwner;
 	private String numDoc;
 	private Double amount;
-	private Double depositAmount;
-	private Double retiroAmount;
+	//Nuevo campo
+	private Double amountAvailable;
+	//private Double depositAmount;
+	//private Double retiroAmount;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date jointAt;
 	@JsonFormat(pattern = "yyyy-MM-dd")

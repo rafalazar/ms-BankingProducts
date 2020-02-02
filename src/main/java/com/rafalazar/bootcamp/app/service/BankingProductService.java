@@ -3,6 +3,7 @@ package com.rafalazar.bootcamp.app.service;
 
 import com.rafalazar.bootcamp.app.document.BankingProduct;
 import com.rafalazar.bootcamp.app.dto.ClientDto;
+import com.rafalazar.bootcamp.app.dto.CreditDto;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,12 +27,8 @@ public interface BankingProductService {
 	
 	public Flux<BankingProduct> findByBank(String bank);
 	
-	public Mono<BankingProduct> depositAmount(String id, Double bp);
-	
-	public Mono<BankingProduct> retiroAmount(String id, Double bp);
-	
 	///-------------------->
-	//Métodos del webClient
+	//Métodos del webClient Cliente
 	
 	public Flux<ClientDto> findAllClients();
 	
@@ -39,4 +36,9 @@ public interface BankingProductService {
 	
 	public Mono<ClientDto> updateBank(String bank, String id);
 	
+	//Método del webClient Crédito
+	
+	public Mono<CreditDto> deposit(Double amount, String id, String numDoc);
+	
+	public Mono<CreditDto> retiro(Double amount, String id);
 }

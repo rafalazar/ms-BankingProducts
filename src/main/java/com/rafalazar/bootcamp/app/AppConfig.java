@@ -12,4 +12,10 @@ public class AppConfig {
 	public WebClient getCliente() {
 		return WebClient.create("http://localhost:8103/clients");
 	}
+	
+	@Bean
+	@Qualifier("ms-creditProduct")
+	public WebClient getCredit() {
+		return WebClient.create("http://localhost:8105/creditProduct");
+	}
 }

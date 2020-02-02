@@ -3,14 +3,18 @@ package com.rafalazar.bootcamp.app.impl;
 import java.util.Date;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rafalazar.bootcamp.app.client.ClienteClient;
+import com.rafalazar.bootcamp.app.client.CreditClient;
 import com.rafalazar.bootcamp.app.document.BankingProduct;
 import com.rafalazar.bootcamp.app.dto.ClientDto;
+import com.rafalazar.bootcamp.app.dto.CreditDto;
 import com.rafalazar.bootcamp.app.repository.BankingProductRepository;
 import com.rafalazar.bootcamp.app.service.BankingProductService;
 
@@ -20,13 +24,16 @@ import reactor.core.publisher.Mono;
 @Service
 public class BankingProductServiceImpl implements BankingProductService{
 	
-	//private static final Logger log = LoggerFactory.getLogger(BankingProductServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(BankingProductServiceImpl.class);
 	
 	@Autowired
 	private BankingProductRepository repo;
 	
 	@Autowired
 	private ClienteClient client;
+	
+	@Autowired
+	private CreditClient cclient;
 	
 	@Override
 	public Flux<BankingProduct> findAll() {
@@ -40,6 +47,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 
 	@Override
 	public Mono<BankingProduct> save(BankingProduct bp) {
+<<<<<<< HEAD
 		if(bp.getJointAt() == null) {
 			bp.setJointAt(new Date());
 		}else {
@@ -69,6 +77,39 @@ public class BankingProductServiceImpl implements BankingProductService{
 		}else {
 			bp.setRetiroAmount(bp.getRetiroAmount());
 		}
+=======
+//		if(bp.getJointAt() == null) {
+//			bp.setJointAt(new Date());
+//		}else {
+//			bp.setJointAt(bp.getJointAt());
+//		}
+//		
+//		if(bp.getUpdateAt() == null) {
+//			bp.setUpdateAt(new Date());
+//		}else {
+//			bp.setUpdateAt(bp.getUpdateAt());
+//		}
+//		
+//		if(bp.getNumAccount() == null) {
+//			bp.setNumAccount(UUID.randomUUID().toString());
+//		}else {
+//			bp.setNumAccount(bp.getNumAccount());
+//		}
+//		
+//		//Validando el amount
+//		if(bp.getAmount() == null) {
+//			bp.setAmount(0.0);
+//		}else {
+//			bp.setAmount(bp.getAmount());
+//		}
+//		
+//		//Nuevo campo
+//		if(bp.getAmountAvailable() == null) {
+//			bp.setAmountAvailable(bp.getAmount());
+//		}else {
+//			bp.setAmountAvailable(bp.getAmountAvailable());
+//		}
+>>>>>>> experimental
 		
 		return repo.save(bp);
 	}
@@ -133,17 +174,12 @@ public class BankingProductServiceImpl implements BankingProductService{
 					}else {
 						b.setAmount(bp.getAmount());
 					}
-					//DepositAmount
-					if(bp.getDepositAmount() == null) {
-						b.setDepositAmount(0.00);
+					
+					//nuevo campo amountAvailable
+					if(bp.getAmountAvailable() == null) {
+						b.setAmountAvailable(b.getAmountAvailable());
 					}else {
-						b.setDepositAmount(bp.getDepositAmount());
-					}
-					//RetiroAmount
-					if(bp.getRetiroAmount() == null) {
-						b.setRetiroAmount(0.00);
-					}else {
-						b.setRetiroAmount(bp.getRetiroAmount());
+						b.setAmountAvailable(bp.getAmountAvailable());
 					}
 					
 					return repo.save(b);
@@ -156,7 +192,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 	}
 
 	//-------------------------------------->
-	//Métodos del cliente
+	//Métodos del cliente Client
 	@Override
 	public Flux<ClientDto> findAllClients() {
 		return client.findAllClients();
@@ -202,40 +238,61 @@ public class BankingProductServiceImpl implements BankingProductService{
 		return repo.findByBank(bank);
 	}
 
+//	@Override
+//	public Mono<BankingProduct> depositAmount(String id, Double bp) {
+//		return repo.findById(id)
+//				.flatMap(b -> {
+//					if(b.getDepositAmount() != 0.0 || b.getDepositAmount() != null) {
+//						b.setDepositAmount(b.getDepositAmount() + bp);
+//						b.setAmount(b.getAmount() + b.getDepositAmount());
+//						b.setDepositAmount(0.0);
+//					}else {
+//						b.setDepositAmount(bp);
+//						b.setAmount(b.getAmount() + b.getDepositAmount());
+//						b.setDepositAmount(0.0);
+//					}
+//					
+//					return repo.save(b);
+//				});
+//	}
+
+//	@Override
+//	public Mono<BankingProduct> retiroAmount(String id, Double bp) {
+//		return repo.findById(id)
+//				.flatMap(b -> {
+//					if(b.getRetiroAmount() != 0.0 || b.getRetiroAmount() != null) {
+//						b.setRetiroAmount(b.getRetiroAmount() + bp);
+//						b.setAmount(b.getAmount() - b.getRetiroAmount());
+//						b.setRetiroAmount(0.0);
+//					}else {
+//						b.setRetiroAmount(bp);
+//						b.setAmount(b.getAmount() - b.getRetiroAmount());
+//						b.setRetiroAmount(0.0);
+//					}
+//					
+//					return repo.save(b);
+//				});
+//	}
+	
+	//-------------->
+	// Métodos del cliente Crédito
 	@Override
-	public Mono<BankingProduct> depositAmount(String id, Double bp) {
-		return repo.findById(id)
-				.flatMap(b -> {
-					if(b.getDepositAmount() != 0.0 || b.getDepositAmount() != null) {
-						b.setDepositAmount(b.getDepositAmount() + bp);
-						b.setAmount(b.getAmount() + b.getDepositAmount());
-						b.setDepositAmount(0.0);
-					}else {
-						b.setDepositAmount(bp);
-						b.setAmount(b.getAmount() + b.getDepositAmount());
-						b.setDepositAmount(0.0);
-					}
+	public Mono<CreditDto> deposit(Double amount, String id, String numDoc) {
+		
+		return repo.findByNumDoc(numDoc).
+				flatMap(b -> {
 					
-					return repo.save(b);
+					b.setAmountAvailable(b.getAmountAvailable() - amount);
+					
+					repo.save(b);
+					
+					return cclient.deposit(amount, id);
 				});
 	}
 
 	@Override
-	public Mono<BankingProduct> retiroAmount(String id, Double bp) {
-		return repo.findById(id)
-				.flatMap(b -> {
-					if(b.getRetiroAmount() != 0.0 || b.getRetiroAmount() != null) {
-						b.setRetiroAmount(b.getRetiroAmount() + bp);
-						b.setAmount(b.getAmount() - b.getRetiroAmount());
-						b.setRetiroAmount(0.0);
-					}else {
-						b.setRetiroAmount(bp);
-						b.setAmount(b.getAmount() - b.getRetiroAmount());
-						b.setRetiroAmount(0.0);
-					}
-					
-					return repo.save(b);
-				});
+	public Mono<CreditDto> retiro(Double amount, String id) {
+		return cclient.retiro(amount, id);
 	}
 
 	
