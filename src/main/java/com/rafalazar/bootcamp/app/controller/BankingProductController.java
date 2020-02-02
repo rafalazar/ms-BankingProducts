@@ -175,13 +175,13 @@ public class BankingProductController {
 		return service.updateBank(bank, id);
 	}
 	
-	@PutMapping("/deposit/{amount}/{id}/{numDoc}")
-	public Mono<CreditDto> deposit(@PathVariable("amount") String amount, @PathVariable("id") String id, @PathVariable("numDoc") String numDoc){
-		return service.deposit(Double.parseDouble(amount), id, numDoc);
+	@PutMapping("/depositC/{amount}/{numAccountC}/{numAccountB}")
+	public Mono<CreditDto> depositC(@PathVariable("amount") String amount, @PathVariable("numAccountC") String numAccountC, @PathVariable("numAccountB") String numAccountB){
+		return service.depositC(Double.parseDouble(amount), numAccountC, numAccountB);
 	}
 	
-	@PutMapping("retiro/{amount}/{id}/{numDoc}")
-	public Mono<CreditDto> retiro(@PathVariable("amount") String amount, @PathVariable("id") String id, @PathVariable("numDoc") String numDoc){
-		return service.retiro(Double.parseDouble(amount), id, numDoc);
+	@PutMapping("retiroC/{amount}/{numAccountC}/{numAccountB}")
+	public Mono<CreditDto> retiroC(@PathVariable("amount") String amount, @PathVariable("numAccountC") String numAccountC, @PathVariable("numAccountB") String numAccountB){
+		return service.retiroC(Double.parseDouble(amount), numAccountC, numAccountB);
 	}
 }

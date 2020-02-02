@@ -44,7 +44,7 @@ public interface BankingProductService {
 	
 	//Método del webClient Crédito
 	
-	public Mono<CreditDto> deposit(Double amount, String id, String numDoc);
+	public Mono<CreditDto> depositC(Double amount, String numAccountC, String numAccountB);
 	
-	public Mono<CreditDto> retiro(Double amount, String id, String numDoc);
+	public Mono<CreditDto> retiroC(Double amount, String numAccountC, String numAccountB);
 }

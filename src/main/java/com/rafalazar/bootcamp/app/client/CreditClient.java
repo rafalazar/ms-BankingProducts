@@ -36,15 +36,15 @@ public class CreditClient {
 	}
 
 	//Método cliente para depositar en la cuenta crédito
-	public Mono<CreditDto> deposit(Double amount, String id) {
+	public Mono<CreditDto> depositC(Double amount, String numberAccount) {
 
 		Map<String, String> path = new HashMap<String, String>();
 
 		path.put("amount", Double.toString(amount));
-		path.put("id", id);
+		path.put("numberAccount", numberAccount);
 
 		return client.put()
-				.uri("/deposit/{amount}/{id}", path)
+				.uri("/depositC/{amount}/{numberAccount}", path)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.retrieve()
@@ -52,15 +52,15 @@ public class CreditClient {
 	}
 
 	//Método cliente para retirar en la cuenta crédito
-	public Mono<CreditDto> retiro(Double amount, String id) {
+	public Mono<CreditDto> retiroC(Double amount, String numberAccount) {
 		
 		Map<String, String> path = new HashMap<String, String>();
 
 		path.put("amount", Double.toString(amount));
-		path.put("id", id);
+		path.put("numberAccount", numberAccount);
 		
 		return client.put()
-				.uri("/retiro/{amount}/{id}", path)
+				.uri("/retiroC/{amount}/{numberAccount}", path)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.retrieve()

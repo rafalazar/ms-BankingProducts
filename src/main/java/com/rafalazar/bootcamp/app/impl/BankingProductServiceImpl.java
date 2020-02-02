@@ -283,10 +283,10 @@ public class BankingProductServiceImpl implements BankingProductService{
 	//-------------->
 	// Métodos del cliente Crédito
 	@Override
-	public Mono<CreditDto> deposit(Double amount, String id, String numDoc) {
+	public Mono<CreditDto> depositC(Double amount, String numAccountC, String numAccountB) {
 		
-		return repo.findByNumDoc(numDoc).
-				flatMap(b -> {
+		return repo.findByNumAccount(numAccountB)
+				.flatMap(b -> {
 					
 					b.setAmountAvailable(b.getAmountAvailable() - amount);
 					
@@ -294,14 +294,14 @@ public class BankingProductServiceImpl implements BankingProductService{
 					
 					log.info(b.getAmountAvailable().toString());
 						
-					return cclient.deposit(amount, id);
+					return cclient.depositC(amount, numAccountC);
 				});
 	}
 
 	@Override
-	public Mono<CreditDto> retiro(Double amount, String id, String numDoc) {
+	public Mono<CreditDto> retiroC(Double amount, String numAccountC, String numAccountB) {
 		
-		return repo.findByNumDoc(numDoc)
+		return repo.findByNumAccount(numAccountB)
 				.flatMap(b -> {
 					b.setAmountAvailable(b.getAmountAvailable() + amount);
 					
@@ -309,7 +309,7 @@ public class BankingProductServiceImpl implements BankingProductService{
 					
 					log.info(b.getAmountAvailable().toString());
 					
-					return cclient.retiro(amount, id);
+					return cclient.retiroC(amount, numAccountC);
 				});
 	}
 
