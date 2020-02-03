@@ -14,6 +14,7 @@ public class CreditDto {
 	private String typeOwner;
 	private String productName;
 	private String numberAccount;
+	private String nameOwner;
 	private String dniOwner;
 	private Double creditAmount;
 	private Double balance;
