@@ -24,7 +24,7 @@ public class CreditClient {
 	@Qualifier("ms-creditProduct")
 	private WebClient client;
 
-	public Flux<CreditDto> findAllProucts() {
+	public Flux<CreditDto> findAllProducts() {
 		return client.get().uri("/findAll").retrieve().bodyToFlux(CreditDto.class);
 	}
 	
