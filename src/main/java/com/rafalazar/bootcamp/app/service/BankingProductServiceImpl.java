@@ -1,4 +1,4 @@
-package com.rafalazar.bootcamp.app.impl;
+package com.rafalazar.bootcamp.app.service;
 
 import java.util.Date;
 import java.util.UUID;
