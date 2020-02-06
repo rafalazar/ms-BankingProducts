@@ -2,6 +2,7 @@ package com.rafalazar.bootcamp.app;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -43,6 +44,16 @@ class BankingServiceTest {
 			
 			Assertions.assertThat(banking.size()>0).isTrue();
 		});
+	}
+	
+	@Test
+	void findByIdBanking() {
+		BankingProduct banking = service.findById("5e387ec71f21901d3ac62cac").block();
+		client.get().uri("/bankingProduct/findById/{id}",Collections.singletonMap("id", banking.getId()))
+		.accept(MediaType.APPLICATION_JSON)
+		.exchange()
+		.expectStatus().isOk()
+		.expectHeader().contentType(MediaType.APPLICATION_JSON);
 	}
 
 }
